@@ -11,4 +11,4 @@ const Courses = () => {
 };
 
 
-export default Courses
+export default Coursess
