@@ -17,6 +17,7 @@ const Card = (props) => {
               src={props.src}
               height="160"
               width="100"
+              alt="Images"
             />
           </div>
         </div>

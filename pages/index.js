@@ -4,7 +4,8 @@ import Card from "../components/banner/card/card";
 import styles from "../styles/Home.module.css";
 import { FetchCoffeeShops } from "../lib/coffee-shop";
 import useTrackLocation from '../hooks/use-track-location'
-import { useEffect } from "react";
+import { useContext, useEffect, useState } from "react";
+import { Actions, StoreContext } from "./_app";
 
 
 export async function getStaticProps(context) {
@@ -15,23 +16,32 @@ export async function getStaticProps(context) {
 }
 
 
+export default function Home() {
 
-export default function Home(props) {
+  const {dispatch, state} = useContext(StoreContext)
+  const {coffeeShops , latlong} = state
+  const { errorMsg, handleLocation, isLoading} = useTrackLocation()
 
-  const {latLong, errorMsg, handleLocation, isLoading} = useTrackLocation()
-  
 
   const handleButtonClick = ()=>{
     handleLocation()
-    console.log('check', latLong, errorMsg)
   }
 
-
   useEffect(()=>{ 
+    const getUpdatedLocation = async ()=>{
+      const resp = await FetchCoffeeShops(latlong)
+      console.log('see', resp)
+      dispatch({
+        type: Actions.SET_Coffee, 
+        payload: {
+          coffeeShops: resp
+        }
+      })
+    }
+    console.log('loading effect')
+    getUpdatedLocation()
 
-
-  },[latLong ,errorMsg ] )
-
+  },[latlong ,errorMsg])
 
 
   return (
@@ -45,7 +55,7 @@ export default function Home(props) {
       <main className={styles.main}>
         <Banner text={isLoading ? 'Loading ....' :  'Find Nearby Shops'} handleClick={handleButtonClick} />
         <div className={styles.cardLayout}>
-          {props.coffeeList.map((coffee) => {
+          {coffeeShops && coffeeShops.map((coffee) => {
             return (
               <Card
                 key={coffee.id}

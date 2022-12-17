@@ -1,9 +1,12 @@
-import { useState } from "react"
+import { useContext, useState } from "react"
+import { Actions, StoreContext } from "../pages/_app"
 
 const locationTracker = ()=>{
 
+    const {dispatch} = useContext(StoreContext)
+
     const [errorMsg, setErrorMsg] = useState('')
-    const [latLong, setLatLong] = useState('')
+    // const [latLong, setLatLong] = useState('')
     const [isLoading, setIsLoading]= useState(false)
 
 
@@ -12,7 +15,11 @@ const locationTracker = ()=>{
         const latitude = position.coords.latitude
         const longitude = position.coords.longitude
 
-        setLatLong(`${latitude}, ${longitude} `)
+        dispatch({
+            type: Actions.SET_LAT_LONG,
+            payload: {latlong: `${latitude},${longitude}`}
+        })
+       
         setErrorMsg('')
         setIsLoading(false)
     }
@@ -26,14 +33,13 @@ const locationTracker = ()=>{
         setIsLoading(true)
         if (navigator.geolocation) {
             navigator.geolocation.getCurrentPosition(success ,error);
-
           } else {
             setErrorMsg("Geolocation is not supported by this browser.");
           }
     }
 
     return {
-        latLong,
+        // latLong,
         handleLocation,
         errorMsg, 
         isLoading
