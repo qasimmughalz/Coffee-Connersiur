@@ -5,7 +5,7 @@ import styles from "../styles/Home.module.css";
 import { FetchCoffeeShops } from "../lib/coffee-shop";
 import useTrackLocation from '../hooks/use-track-location'
 import { useContext, useEffect, useState } from "react";
-import { Actions, StoreContext } from "./_app";
+import { Actions, StoreContext } from "./../store/store-context";
 
 
 export async function getStaticProps(context) {
@@ -29,8 +29,9 @@ export default function Home() {
 
   useEffect(()=>{ 
     const getUpdatedLocation = async ()=>{
-      const resp = await FetchCoffeeShops(latlong)
-      console.log('see', resp)
+      console.log("the latlong on efefct", latlong)
+      const res = await fetch(`/api/getCoffeeStores?latlong=${latlong}`)
+      const resp = await res.json()
       dispatch({
         type: Actions.SET_Coffee, 
         payload: {

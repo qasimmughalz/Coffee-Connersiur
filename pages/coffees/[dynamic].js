@@ -3,7 +3,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { useContext, useEffect, useState } from "react";
-import { StoreContext } from "../_app";
+import { StoreContext } from "../../store/store-context";
 
 import { FetchCoffeeShops } from "../../lib/coffee-shop";
 import styles from "../../styles/cofee-store.module.css";
@@ -70,6 +70,7 @@ const CoffeeItem = (props) => {
     return <div>loading....</div>;
   }
 
+
   const { name,  location,  timezone, imgUrl} = coffees;
   const images = imgUrl ? imgUrl : 'https://images.unsplash.com/photo-1498804103079-a6351b050096?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=2468&q=80'
   console.log('check pros', coffees)
@@ -81,7 +82,7 @@ const CoffeeItem = (props) => {
   return (
     <>
       <Head>
-        <title>{name}</title>
+        <title>{name && name}</title>
       </Head>
 
       <div className={styles.backToHomeLink}>
@@ -92,7 +93,7 @@ const CoffeeItem = (props) => {
         <div className={styles.heading}>
 
           <div className={styles.col1}>
-            <h2> {name} </h2>
+            <h2> {name && name} </h2>
             {images && 
             <Image src={images} width="600" height="300" alt="image"></Image> }
           </div>

@@ -1,5 +1,5 @@
 import { useContext, useState } from "react"
-import { Actions, StoreContext } from "../pages/_app"
+import { Actions, StoreContext } from "../store/store-context"
 
 const locationTracker = ()=>{
 
