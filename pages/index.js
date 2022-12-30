@@ -28,8 +28,11 @@ export default function Home() {
   }
 
   useEffect(()=>{ 
+
+
     const getUpdatedLocation = async ()=>{
-      console.log("the latlong on efefct", latlong)
+      const check = await fetch('/api/createCoffeeStore')
+      console.log("in the home page", check)
       const res = await fetch(`/api/getCoffeeStores?latlong=${latlong}`)
       const resp = await res.json()
       dispatch({
